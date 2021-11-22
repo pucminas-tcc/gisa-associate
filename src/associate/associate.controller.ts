@@ -9,31 +9,31 @@ export class AssociateController {
 
   constructor(private readonly associateService: AssociateService) {}
 
-  @MessagePattern({ cmd: 'create' })
+  @MessagePattern({ cmd: 'associate.create' })
   create(payload: any): Promise<Associate> {
     this.logger.log(payload);
     return this.associateService.create(payload);
   }
 
-  @MessagePattern({ cmd: 'update' })
+  @MessagePattern({ cmd: 'associate.update' })
   update(payload: any) {
     const { id } = payload;
     return this.associateService.update({ where: { id }, data: payload });
   }
 
-  @MessagePattern({ cmd: 'remove' })
+  @MessagePattern({ cmd: 'associate.remove' })
   remove(payload: any) {
     const { id } = payload;
     return this.associateService.delete({ id });
   }
 
-  @MessagePattern({ cmd: 'list' })
+  @MessagePattern({ cmd: 'associate.list' })
   list(payload: any) {
     const { id } = payload;
     return this.associateService.associate({ id });
   }
 
-  @MessagePattern({ cmd: 'all' })
+  @MessagePattern({ cmd: 'associate.all' })
   all(payload: any) {
     return this.associateService.associates(payload);
   }

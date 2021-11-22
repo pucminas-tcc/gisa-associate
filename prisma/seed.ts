@@ -2,42 +2,53 @@ import { PrismaClient, Prisma } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+async function getAssociateData(): Promise<Prisma.AssociateCreateInput[]> {
+  return [
+    {
+      accountId: '09c2d41f-d2b7-4f00-b21c-1601b8d2527c',
+      firstName: 'Rodolfo',
+      age: 25,
+      middleName: '',
+      lastName: 'Olivieri',
+      isActive: true,
+    },
+  ];
+}
+
+async function getAssociateTypeData(): Promise<
+  Prisma.AssociateTypeCreateInput[]
+> {
+  return [
+    {
+      name: 'Individual',
+      description: 'Plano destinado a um único usuário',
+    },
+    {
+      name: 'Empresarial',
+      description: 'Plano destinado a funcionários de uma empresa.',
+    },
+  ];
+}
+
 async function getPlanData(): Promise<Prisma.PlanCreateInput[]> {
   return [
     {
       name: 'Enfermaria',
       description: 'Plano básico. Possui co-participação.',
-      value: 200.0,
+      baseValue: 200.0,
     },
     {
       name: 'Apartamento',
       description: 'Plano intermediário. Não possui co-participação.',
-      value: 400.0,
+      baseValue: 400.0,
+      canEnableOdontological: true,
     },
     {
       name: 'VIP',
       description:
         'Plano avançado. Inclui diversos serviços e atendimentos. Sem co-participação.',
-      value: 1000.0,
-    },
-  ];
-}
-
-async function getAssociateData(): Promise<Prisma.AssociateCreateInput[]> {
-  const plan = await prisma.plan.findFirst({ where: { name: 'VIP' } });
-  return [
-    {
-      accountId: '09c2d41f-d2b7-4f00-b21c-1601b8d2527c',
-      firstName: 'Rodolfo',
-      middleName: '',
-      lastName: 'Sivieri',
-      isActive: true,
-      hasDentalPlan: true,
-      plan: {
-        connect: {
-          id: plan.id,
-        },
-      },
+      baseValue: 1000.0,
+      canEnableOdontological: true,
     },
   ];
 }
@@ -63,6 +74,19 @@ async function main() {
     });
     console.log(
       `Created associate '${associate.firstName}' with id: ${associate.id}`,
+    );
+  }
+
+  console.log(`Start seeding associate type data ...`);
+
+  const associateTypeData = await getAssociateTypeData();
+
+  for (const data of associateTypeData) {
+    const associateType = await prisma.associateType.create({
+      data: data,
+    });
+    console.log(
+      `Created associateType '${associateType.name}' with id: ${associateType.id}`,
     );
   }
 

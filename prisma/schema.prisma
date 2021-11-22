@@ -11,22 +11,40 @@ datasource db {
 }
 
 model Associate {
-  id            String  @id @default(uuid())
-  accountId     String
-  age           Int?
-  firstName     String
-  middleName    String?
-  lastName      String
-  isActive      Boolean
-  hasDentalPlan Boolean
-  planId        String  @unique
-  plan          Plan    @relation(fields: [planId], references: [id])
+  id                String              @id @default(uuid())
+  accountId         String
+  age               Int
+  firstName         String
+  middleName        String?
+  lastName          String
+  isActive          Boolean             @default(true)
+  AssociatePlanType AssociatePlanType[]
+}
+
+model AssociateType {
+  id                String              @id @default(uuid())
+  name              String
+  description       String
+  AssociatePlanType AssociatePlanType[]
 }
 
 model Plan {
-  id          String     @id @default(uuid())
-  name        String
-  description String
-  value       Float
-  Associate   Associate?
+  id                     String              @id @default(uuid())
+  name                   String
+  description            String
+  baseValue              Float
+  canEnableOdontological Boolean             @default(false)
+  AssociatePlanType      AssociatePlanType[]
+}
+
+model AssociatePlanType {
+  id                   String        @id @default(uuid())
+  planId               String        @unique
+  associateId          String        @unique
+  associateTypeId      String        @unique
+  hasOdontologicalPlan Boolean       @default(false)
+  finalPlanValue       Float         @default(0.0)
+  associate            Associate     @relation(fields: [associateId], references: [id])
+  plan                 Plan          @relation(fields: [planId], references: [id])
+  associateType        AssociateType @relation(fields: [associateTypeId], references: [id])
 }
