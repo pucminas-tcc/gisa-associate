@@ -10,6 +10,19 @@ export class AssociatePlanTypeService {
   constructor(private prisma: PrismaService) {}
 
   async create(data) {
+    const planValueAfterCalculus = await this.reajustPlanValue(data);
+
+    data = {
+      ...data,
+      finalPlanValue: planValueAfterCalculus,
+    };
+
+    return this.prisma.associatePlanType.create({
+      data,
+    });
+  }
+
+  private async reajustPlanValue(data: any) {
     const { associateId, planId } = data;
 
     const associate_info = await this.prisma.associate.findUnique({
@@ -29,15 +42,12 @@ export class AssociatePlanTypeService {
 
     const { age } = associate_info;
     const { baseValue } = plan_info;
+    let planValueAfterCalculus = await calculatePlanValue(baseValue, age);
 
-    data = {
-      ...data,
-      finalPlanValue: await calculatePlanValue(baseValue, age),
-    };
-
-    return this.prisma.associatePlanType.create({
-      data,
-    });
+    if (data.hasOdontologicalPlan && plan_info.name != 'VIP') {
+      planValueAfterCalculus = planValueAfterCalculus * 0.15;
+    }
+    return planValueAfterCalculus;
   }
 
   async associatePlanType(
@@ -67,9 +77,18 @@ export class AssociatePlanTypeService {
 
   async update(params: {
     where: Prisma.AssociatePlanTypeWhereUniqueInput;
-    data: Prisma.AssociatePlanTypeUpdateInput;
+    data;
   }): Promise<AssociatePlanType> {
-    const { where, data } = params;
+    const { where } = params;
+    let { data } = params;
+
+    const planValueAfterCalculus = await this.reajustPlanValue(data);
+
+    data = {
+      ...data,
+      finalPlanValue: planValueAfterCalculus,
+    };
+
     return this.prisma.associatePlanType.update({
       data,
       where,
