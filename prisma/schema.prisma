@@ -19,6 +19,7 @@ model Associate {
   lastName          String
   isActive          Boolean             @default(true)
   AssociatePlanType AssociatePlanType[]
+  Reimbursement     Reimbursement[]
 }
 
 model AssociateType {
@@ -35,6 +36,7 @@ model Plan {
   baseValue              Float
   canEnableOdontological Boolean             @default(false)
   AssociatePlanType      AssociatePlanType[]
+  Reimbursement          Reimbursement[]
 }
 
 model AssociatePlanType {
@@ -47,4 +49,15 @@ model AssociatePlanType {
   associate            Associate     @relation(fields: [associateId], references: [id])
   plan                 Plan          @relation(fields: [planId], references: [id])
   associateType        AssociateType @relation(fields: [associateTypeId], references: [id])
+}
+
+model Reimbursement {
+  id             String    @id @default(uuid())
+  planId         String    @unique
+  associateId    String    @unique
+  totalRequested Float
+  totalPaid      Float?
+  isApproved     Boolean   @default(false)
+  associate      Associate @relation(fields: [associateId], references: [id])
+  plan           Plan      @relation(fields: [planId], references: [id])
 }

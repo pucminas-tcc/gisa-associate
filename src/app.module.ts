@@ -3,6 +3,7 @@ import { AssociateModule } from './associate/associate.module';
 import { PlanModule } from './plan/plan.module';
 import { AssociateTypeModule } from './associate-type/associate-type.module';
 import { AssociatePlanTypeModule } from './associate-plan-type/associate-plan-type.module';
+import { ReimbursementModule } from './reimbursement/reimbursement.module';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { AssociatePlanTypeModule } from './associate-plan-type/associate-plan-ty
     PlanModule,
     AssociateTypeModule,
     AssociatePlanTypeModule,
+    ReimbursementModule,
   ],
 })
 export class AppModule {}
