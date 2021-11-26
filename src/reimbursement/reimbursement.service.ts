@@ -57,4 +57,15 @@ export class ReimbursementService {
       where,
     });
   }
+
+  async acceptReimbursement(params: {
+    where: Prisma.ReimbursementWhereUniqueInput;
+    data: Prisma.ReimbursementUpdateInput;
+  }): Promise<Reimbursement> {
+    const { where, data } = params;
+    return this.prisma.reimbursement.update({
+      data,
+      where,
+    });
+  }
 }

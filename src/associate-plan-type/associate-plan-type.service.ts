@@ -17,6 +17,7 @@ export class AssociatePlanTypeService {
       finalPlanValue: planValueAfterCalculus,
     };
 
+    console.log(data);
     return this.prisma.associatePlanType.create({
       data,
     });
@@ -44,8 +45,8 @@ export class AssociatePlanTypeService {
     const { baseValue } = plan_info;
     let planValueAfterCalculus = await calculatePlanValue(baseValue, age);
 
-    if (data.hasOdontologicalPlan && plan_info.name != 'VIP') {
-      planValueAfterCalculus = planValueAfterCalculus * 0.15;
+    if (data.hasOdontologicalPlan && plan_info.canEnableOdontological) {
+      planValueAfterCalculus += planValueAfterCalculus * 0.15;
     }
     return planValueAfterCalculus;
   }
@@ -75,10 +76,7 @@ export class AssociatePlanTypeService {
     });
   }
 
-  async update(params: {
-    where: Prisma.AssociatePlanTypeWhereUniqueInput;
-    data;
-  }): Promise<AssociatePlanType> {
+  async update(params: { where; data }): Promise<AssociatePlanType> {
     const { where } = params;
     let { data } = params;
 

@@ -37,4 +37,10 @@ export class AssociateController {
   all(payload: any) {
     return this.associateService.associates(payload);
   }
+
+  @MessagePattern({ cmd: 'associate.is-active' })
+  isAssociateActive(payload: any) {
+    const { id } = payload;
+    return this.associateService.isAssociateActive({ id });
+  }
 }

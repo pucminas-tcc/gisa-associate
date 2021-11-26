@@ -37,7 +37,7 @@ export class AssociatePlanTypeController {
     return this.associatePlanTypeService.associatePlanType({ id });
   }
 
-  @MessagePattern({ cmd: 'all' })
+  @MessagePattern({ cmd: 'associate-plan-type.all' })
   all(payload: any) {
     return this.associatePlanTypeService.associatePlanTypes(payload);
   }

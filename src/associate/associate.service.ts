@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { Associate, Prisma } from '@prisma/client';
+import { callSAFService } from 'src/utils/legacy_systems';
 
 @Injectable()
 export class AssociateService {
@@ -20,6 +21,17 @@ export class AssociateService {
     return this.prisma.associate.findUnique({
       where: associateWhereUniqueInput,
     });
+  }
+
+  async isAssociateActive(
+    associateWhereUniqueInput: Prisma.AssociateWhereUniqueInput,
+  ): Promise<boolean | null> {
+    const associate = this.prisma.associate.findUnique({
+      where: associateWhereUniqueInput,
+    });
+
+    // Implementar validação com a base do serviço para o sistema SAF
+    return (await associate).isActive == callSAFService({});
   }
 
   async associates(params: {

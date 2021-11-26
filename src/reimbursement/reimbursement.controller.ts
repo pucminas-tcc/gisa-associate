@@ -37,4 +37,9 @@ export class ReimbursementController {
   all(payload: any) {
     return this.reimbursementService.reimbursements(payload);
   }
+
+  @MessagePattern({ cmd: 'reimbursement.acceptance' })
+  acceptReimbursement(payload: any) {
+    return this.reimbursementService.acceptReimbursement(payload);
+  }
 }

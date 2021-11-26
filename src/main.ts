@@ -14,6 +14,6 @@ async function bootstrap() {
     },
   });
   await app.listen();
-  logger.log('Identity service is listening at port 8082');
+  logger.log('Associate service is listening at port 8082');
 }
 bootstrap();
