@@ -1,0 +1,65 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table Associate {
+  id String [pk]
+  accountId String [not null]
+  age Int [not null]
+  firstName String [not null]
+  middleName String
+  lastName String [not null]
+  isActive Boolean [not null, default: true]
+  AssociatePlanType AssociatePlanType [not null]
+  Reimbursement Reimbursement [not null]
+}
+
+Table AssociateType {
+  id String [pk]
+  name String [not null]
+  description String [not null]
+  AssociatePlanType AssociatePlanType [not null]
+}
+
+Table Plan {
+  id String [pk]
+  name String [not null]
+  description String [not null]
+  baseValue Float [not null]
+  canEnableOdontological Boolean [not null, default: false]
+  AssociatePlanType AssociatePlanType [not null]
+  Reimbursement Reimbursement [not null]
+}
+
+Table AssociatePlanType {
+  id String [pk]
+  planId String [unique, not null]
+  associateId String [unique, not null]
+  associateTypeId String [unique, not null]
+  hasOdontologicalPlan Boolean [not null, default: false]
+  finalPlanValue Float [not null, default: 0]
+  associate Associate [not null]
+  plan Plan [not null]
+  associateType AssociateType [not null]
+}
+
+Table Reimbursement {
+  id String [pk]
+  planId String [not null]
+  associateId String [not null]
+  totalRequested Float [not null]
+  totalPaid Float
+  isApproved Boolean [not null, default: false]
+  associate Associate [not null]
+  plan Plan [not null]
+}
+
+Ref: AssociatePlanType.associateId > Associate.id
+
+Ref: AssociatePlanType.planId > Plan.id
+
+Ref: AssociatePlanType.associateTypeId > AssociateType.id
+
+Ref: Reimbursement.associateId > Associate.id
+
+Ref: Reimbursement.planId > Plan.id

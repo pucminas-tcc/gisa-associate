@@ -7,7 +7,7 @@ import { callSAFService } from 'src/utils/legacy_systems';
 export class AssociateService {
   private readonly logger = new Logger(AssociateService.name);
 
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async create(data: Prisma.AssociateCreateInput): Promise<Associate> {
     return this.prisma.associate.create({
@@ -25,13 +25,13 @@ export class AssociateService {
 
   async isAssociateActive(
     associateWhereUniqueInput: Prisma.AssociateWhereUniqueInput,
-  ): Promise<boolean | null> {
+  ): Promise<any | null> {
     const associate = this.prisma.associate.findUnique({
       where: associateWhereUniqueInput,
     });
 
     // Implementar validação com a base do serviço para o sistema SAF
-    return (await associate).isActive == callSAFService({});
+    return { "isActive": (await associate).isActive == callSAFService({}) };
   }
 
   async associates(params: {

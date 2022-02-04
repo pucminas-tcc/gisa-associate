@@ -11,13 +11,13 @@ export class AssociatePlanTypeController {
   ) {}
 
   @MessagePattern({ cmd: 'associate-plan-type.create' })
-  create(payload: any) {
+  private create(payload: any) {
     this.logger.log(payload);
     return this.associatePlanTypeService.create(payload);
   }
 
   @MessagePattern({ cmd: 'associate-plan-type.update' })
-  update(payload: any) {
+  private update(payload: any) {
     const { id } = payload;
     return this.associatePlanTypeService.update({
       where: { id },
@@ -26,19 +26,19 @@ export class AssociatePlanTypeController {
   }
 
   @MessagePattern({ cmd: 'associate-plan-type.remove' })
-  remove(payload: any) {
+  private remove(payload: any) {
     const { id } = payload;
     return this.associatePlanTypeService.delete({ id });
   }
 
   @MessagePattern({ cmd: 'associate-plan-type.list' })
-  list(payload: any) {
+  private list(payload: any) {
     const { id } = payload;
     return this.associatePlanTypeService.associatePlanType({ id });
   }
 
   @MessagePattern({ cmd: 'associate-plan-type.all' })
-  all(payload: any) {
+  private all(payload: any) {
     return this.associatePlanTypeService.associatePlanTypes(payload);
   }
 }

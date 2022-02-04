@@ -10,31 +10,31 @@ export class AssociateTypeController {
   constructor(private readonly associateTypeService: AssociateTypeService) {}
 
   @MessagePattern({ cmd: 'associate-type.create' })
-  create(payload: any): Promise<AssociateType> {
+  private create(payload: any): Promise<AssociateType> {
     this.logger.log(payload);
     return this.associateTypeService.create(payload);
   }
 
   @MessagePattern({ cmd: 'associate-type.update' })
-  update(payload: any) {
+  private update(payload: any) {
     const { id } = payload;
     return this.associateTypeService.update({ where: { id }, data: payload });
   }
 
   @MessagePattern({ cmd: 'associate-type.remove' })
-  remove(payload: any) {
+  private remove(payload: any) {
     const { id } = payload;
     return this.associateTypeService.delete({ id });
   }
 
   @MessagePattern({ cmd: 'associate-type.list' })
-  list(payload: any) {
+  private list(payload: any) {
     const { id } = payload;
     return this.associateTypeService.associateType({ id });
   }
 
   @MessagePattern({ cmd: 'associate-type.all' })
-  all(payload: any) {
+  private all(payload: any) {
     return this.associateTypeService.associateTypes(payload);
   }
 }

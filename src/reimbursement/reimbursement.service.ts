@@ -36,7 +36,7 @@ export class ReimbursementService {
       cursor,
       where,
       orderBy,
-    });
+    }) || [];
   }
 
   async update(params: {
